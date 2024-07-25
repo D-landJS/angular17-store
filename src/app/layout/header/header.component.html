@@ -1,0 +1,47 @@
+<nav class="p-4 text-white bg-orange-500">
+  <div class="container flex items-center justify-between mx-auto">
+    <a routerLink="/" class="text-lg font-bold">DOMINISTORE</a>
+    <div class="flex items-center">
+      <a routerLink="/products" class="mr-6">Products</a>
+      <div
+        class="relative"
+        (mouseenter)="showCart.set(true)"
+        (mouseleave)="showCart.set(false)"
+      >
+        <a routerLink="/checkout" class="relative">
+          <img
+            src="../../../assets/icons/cart-icon.svg"
+            alt="Cart"
+            class="inline-block"
+          />
+          <span
+            class="absolute right-0 px-1 text-xs font-bold text-white bg-red-600 rounded-full -top-1"
+            >{{ cartStore.productsCount() }}</span
+          >
+        </a>
+        @if (showCart() && cartStore.productsCount()) {
+
+        <div
+          [ngClass]="{ 'show-cart-animation': showCart() }"
+          class="absolute right-0 z-30 w-64 p-4 mt-2 bg-white text-black rounded-lg shadow-lg"
+        >
+          @for (product of cartStore.products(); track $index) {
+          <div class="flex items-center justify-between mb-4">
+            <span
+              >{{ product.quantity }} -
+              {{ product.title | slice : 0 : 10 }}</span
+            >
+            <span>{{ product.subtotal || product.price | currency }}</span>
+          </div>
+          }
+          <hr class="my-2 border-gray-300" />
+          <div class="flex justify-between py-2 text-lg font-semibold">
+            <span>Total:</span>
+            <span>{{ cartStore.totalAmount() | currency }}</span>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</nav>
